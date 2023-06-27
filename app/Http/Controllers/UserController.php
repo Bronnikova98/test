@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return view('users.index');
+        $users = User::orderBy('created_at', 'desc')->get();
+        return view('users.index', compact('users'));
     }
 
     public function create()
@@ -16,28 +22,50 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
+    {
+
+
+        $data = $request->all();
+        $user = new User();
+
+        $user->createOrUpdate($data);
+
+
+        $user->save();
+
+
+
+        return redirect()->back();
+
+    }
+
+    public function show(User $user)
     {
         //
     }
 
-    public function show(string $user)
+    public function edit(User $user)
     {
-        //
+        return view('users.edit', [
+            'user' => $user
+        ]);
     }
 
-    public function edit(string $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        return view('users.edit');
+
+        $data = $request->all();
+
+        $user->createOrUpdate($data);
+        $user->save();
+
+        return redirect()->back();
     }
 
-    public function update(Request $request, string $user)
+    public function destroy(User $user)
     {
-        //
-    }
-
-    public function destroy(string $user)
-    {
-        //
+        $user->delete();
+        return redirect()->back();
     }
 }
