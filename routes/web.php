@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware(['auth', 'role:admin|user'])->prefix('home')->group(function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+});
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin-panel')->group(function () {
+    Route::resource('users', App\Http\Controllers\UserController::class)->middleware('role:admin');
+});
+
+Auth::routes();
+
+
