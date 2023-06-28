@@ -4,7 +4,19 @@
  * @var \App\Models\User $user
  */
 ?>
+<div class="form-group">
+    <label>
+        Role
+    </label>
 
+    <select name="role">
+        @foreach($roles as $key => $role)
+            <option value="{{ $role }}" {{ isset($user) && $user->hasRole($key) ? 'selected' : ''}}> {{ $role }}
+            </option>
+        @endforeach
+    </select>
+
+</div>
 <div class="form-group">
     <label>
         Name
