@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -59,6 +60,7 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
+        Log::info('Update user '.$user->getKey(), ['name' => $user->getName()]);
         $data = $request->all();
         $user->createOrUpdate($data);
         $user->save();
