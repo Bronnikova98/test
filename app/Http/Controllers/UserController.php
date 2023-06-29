@@ -63,23 +63,6 @@ class UserController extends Controller
         $user->createOrUpdate($data);
         $user->save();
         return redirect()->back();
-
-//        if ($user->hasRole('user')) {
-//            $user->save();
-//            return redirect()->back();
-//        }
-//
-//        if ($user->hasRole('admin')) {
-//
-//            $auth_current_user_id = Auth::id();
-//            $user_id = $user->getKey();
-//            if ($auth_current_user_id == $user_id) {
-//                $user->save();
-//                return redirect()->back();
-//            } else {
-//                return redirect()->back()->withErrors('error', 'error');
-//            }
-//        }
     }
 
     public function destroy(User $user)
