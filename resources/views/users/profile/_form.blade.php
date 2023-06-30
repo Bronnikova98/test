@@ -4,20 +4,8 @@
  * @var \App\Models\User $user
  */
 ?>
+
 <div class="form-group">
-    <label class="form-label">
-        Role
-    </label>
-
-    <select class="form-select" name="role">
-        @foreach($roles as $key => $role)
-            <option value="{{ $role }}" {{ isset($user) && $user->hasRole($key) ? 'selected' : ''}}> {{ $role }}
-            </option>
-        @endforeach
-    </select>
-
-</div>
-<div class="form-group mt-3">
     <label class="form-label">
         Name
     </label>
@@ -68,14 +56,14 @@
                 </span>
     @enderror
 </div>
+
 <div class="form-group mt-3">
     <label class="form-label">
-        Password
+        Photo
     </label>
-    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-           value="{{ isset($user) ? $user->getPassword() : null}}">
+    <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo">
 
-    @error('password')
+    @error('photo')
     <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

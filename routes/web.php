@@ -22,6 +22,9 @@ Route::middleware(['auth'])->prefix('home')->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
     Route::resource('posts', App\Http\Controllers\PostController::class);
     Route::resource('profile/posts', App\Http\Controllers\Profile\PostController::class, ['as' => 'profile']);
+    Route::get('profile', [App\Http\Controllers\Profile\UserController::class, 'index'])->name('profile');
+    Route::get('profile/{user}/edit', [App\Http\Controllers\Profile\UserController::class, 'edit'])->name('profile.edit');
+    Route::put('profile/{user}', [App\Http\Controllers\Profile\UserController::class, 'update'])->name('profile.update');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin-panel')->group(function () {

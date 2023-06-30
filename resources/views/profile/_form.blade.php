@@ -6,7 +6,7 @@
 ?>
 
 <div class="form-group">
-    <label>
+    <label class="form-label">
         Title
     </label>
     <input type="text" class="form-control @error('title') is-invalid @enderror" name="title"
@@ -18,8 +18,8 @@
                 </span>
     @enderror
 </div>
-<div class="form-group">
-    <label>
+<div class="form-group mt-3">
+    <label class="form-label">
         Short description
     </label>
     <input type="text" class="form-control @error('short_description') is-invalid @enderror" name="short_description"
@@ -32,8 +32,8 @@
     @enderror
 </div>
 
-<div class="form-group">
-    <label for="textarea-post">
+<div class="form-group mt-3">
+    <label for="textarea-post" class="form-label">
         Text
     </label>
 
