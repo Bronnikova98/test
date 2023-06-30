@@ -1,9 +1,13 @@
+<?php
+/**
+ * @var \App\Models\Post $post
+ */
+?>
 @extends('layouts.base')
-
 @section('title')
-    {{ $post->title }}
+    {{ $post->getTitle()}}
 @endsection
 
 @section('content')
-    {{ $post->text }}
+    {{ $post->getText()}}
 @endsection

@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\Models\Post $userPost
+ */
+?>
 @extends('layouts.base')
 
 @section('title')
@@ -15,28 +20,28 @@
     @foreach($userPosts as $userPost)
 
         <div>
-            {{ $userPost['title'] }}
+            {{ $userPost->getTitle() }}
         </div>
 
         <div>
-            {{ $userPost['user_id'] }}
+            {{ $userPost->getUserId() }}
         </div>
 
         <div>
-            {{ $userPost['short_description'] }}
+            {{ $userPost->getShortDescription() }}
         </div>
 
         <div>
-            <a href="{{ route('profile.posts.edit', $userPost['id']) }}">
+            <a href="{{ route('profile.posts.edit', $userPost->getKey()) }}">
                 Update
             </a>
         </div>
 
         <div>
-            <form action="{{ route('profile.posts.destroy', $userPost['id']) }}" method="POST">
+            <form action="{{ route('profile.posts.destroy', $userPost->getKey()) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="submit" >
+                <button type="submit">
                     Delete
                 </button>
             </form>

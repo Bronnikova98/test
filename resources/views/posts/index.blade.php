@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\Models\Post $post
+ */
+?>
 @extends('layouts.base')
 
 @section('title')
@@ -8,15 +13,15 @@
 
     @foreach($posts as $post)
         <div>
-            {{ $post['title'] }}
+            {{ $post->getTitle() }}
         </div>
 
         <div>
-            {{ $post['user_id'] }}
+            {{ $post->getUserId()}}
         </div>
 
         <div>
-            {{ $post['short_description'] }}
+            {{ $post->getShortDescription()}}
         </div>
 
         <div>
