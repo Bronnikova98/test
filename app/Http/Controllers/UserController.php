@@ -6,35 +6,36 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')->get();
+        $users = User::orderBy('created_at', 'desc')->paginate(4);
         return view('users.index', compact('users'));
     }
 
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all()->pluck('name');
+        return view('users.create', compact('roles'));
     }
 
     public function store(CreateUserRequest $request)
     {
-
-
         $data = $request->all();
+        $dataRole = $request->get('role');
+
         $user = new User();
 
         $user->createOrUpdate($data);
 
+        $user->assignRole($dataRole);
 
         $user->save();
-
-
 
         return redirect()->back();
 
@@ -47,19 +48,22 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+
+        $roles = Role::all()->pluck('name', 'id');
+
+
         return view('users.edit', [
-            'user' => $user
+            'user' => $user,
+            'roles' => $roles,
         ]);
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
-
+        Log::info('Update user '.$user->getKey(), ['name' => $user->getName()]);
         $data = $request->all();
-
         $user->createOrUpdate($data);
         $user->save();
-
         return redirect()->back();
     }
 
