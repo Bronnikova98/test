@@ -6,7 +6,7 @@
 ?>
 
 <div class="form-group">
-    <label>
+    <label class="form-label">
         Name
     </label>
     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
@@ -18,8 +18,8 @@
                 </span>
     @enderror
 </div>
-<div class="form-group">
-    <label>
+<div class="form-group mt-3">
+    <label class="form-label">
         Surname
     </label>
     {{--    <input type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ $user->getSurname() ?: null}}" >--}}
@@ -30,8 +30,8 @@
                 </span>
     @enderror
 </div>
-<div class="form-group">
-    <label>
+<div class="form-group mt-3">
+    <label class="form-label">
         Date of birth
     </label>
     <input type="text" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth"
@@ -43,8 +43,8 @@
                 </span>
     @enderror
 </div>
-<div class="form-group">
-    <label>
+<div class="form-group mt-3">
+    <label class="form-label">
         Email Address
     </label>
     <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
@@ -57,8 +57,8 @@
     @enderror
 </div>
 
-<div class="form-group">
-    <label>
+<div class="form-group mt-3">
+    <label class="form-label">
         Photo
     </label>
     <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo">

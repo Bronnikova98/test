@@ -5,19 +5,19 @@
 @endsection
 
 @section('content')
-    <div>
-        <p>
+    <div class="container my-3">
+        <b>
             Edit User
-        </p>
+        </b>
     </div>
 
-    <div>
+    <div class="container">
         <form action="{{ route('users.update', $user->getKey()) }}" method="POST">
             @csrf
             @method('PUT')
             @include('users._form')
-            <div>
-                <button type="submit">
+            <div class="mt-3">
+                <button type="submit" class="btn btn-md btn-outline-secondary">
                     Update
                 </button>
             </div>

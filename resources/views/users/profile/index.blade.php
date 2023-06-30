@@ -10,51 +10,25 @@
 @endsection
 
 @section('content')
-
-    <div>
+    <div class="container mt-3">
         <p>
             <b>
                 User Profile
             </b>
         </p>
     </div>
-
-
-    <div>
-        <p>
-            {{ $user->getName() }}
-        </p>
-    </div>
-
-    <div>
-        <p>
-            {{ $user->getSurname()}}
-        </p>
-    </div>
-
-    <div>
-        <p>
-            {{ $user->getDateOfBirth() }}
-        </p>
-    </div>
-
-    <div>
-        <p>
-            {{ $user->getEmail()}}
-        </p>
-    </div>
-
-    <div>
-        <img src="{{ $user->getPublicPath() }}">
-    </div>
-
-
-    <div>
-        <a href="{{ route('profile.edit', $user->getkey()) }}">
-                Update User
-            </a>
+    <div class="container">
+        <div class="card" style="width: 18rem;">
+            <img src="{{ $user->getPublicPath() }}" class="card-img-top" style="max-width: 100px;">
+            <div class="card-body">
+                <h5 class="card-title">{{ $user->getName() }} {{ $user->getSurname()}}</h5>
+                <p class="card-text">{{ $user->getDateOfBirth() }}</p>
+                <p class="card-text">{{ $user->getEmail() }}</p>
+                <button class="btn btn-sm btn-outline-secondary me-3" type="button"
+                        onclick="window.location='{{ URL::route('profile.edit', $user->getkey()) }}'">
+                    Update User
+                </button>
+            </div>
         </div>
-
-
-
+    </div>
 @endsection

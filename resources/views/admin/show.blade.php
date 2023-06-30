@@ -9,5 +9,9 @@
 @endsection
 
 @section('content')
-    {{ $post->getText()}}
+    <div class="container">
+        <p>
+            {{ $post->getText()}}
+        </p>
+    </div>
 @endsection

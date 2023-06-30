@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\Models\User $user
+ */
+?>
 @extends('layouts.base')
 
 @section('title')
@@ -5,10 +10,11 @@
 @endsection
 
 @section('content')
-    <div>
-        <a href="{{ route('users.create') }}">
+    <div class="container my-3 d-flex justify-content-end">
+        <button class="btn btn-sm btn-outline-secondary" type="button"
+                onclick="window.location='{{ URL::route('users.create') }}'">
             Add User
-        </a>
+        </button>
     </div>
 
     <div class="container">
@@ -18,7 +24,7 @@
             </p>
         @else
             <div>
-                <table>
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>
@@ -43,29 +49,36 @@
                     @foreach($users as $user)
                         <tr>
                             <td>
-                                {{ $user['id'] }}
+                                {{ $user->getKey() }}
                             </td>
                             <td>
-                                {{ $user['name'] }}
+                                {{ $user->getName()}}
                             </td>
                             <td>
-                                {{ $user['surname'] }}
+                                {{ $user->getSurname() }}
                             </td>
                             <td>
-                                {{ $user['date_of_birth'] }}
+                                {{ $user->getDateOfBirth() }}
                             </td>
                             <td>
-                                <a href="{{ route('users.edit', $user['id']) }}">
-                                    Update
-                                </a>
-                                <div>
-                                    <form action="{{ route('users.destroy', $user['id']) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" >
-                                            Delete
+                                <div class="row">
+                                    <div class="col d-flex">
+
+
+                                        <button class="btn btn-sm btn-outline-secondary me-3" type="button"
+                                                onclick="window.location='{{ URL::route('users.edit', $user->getKey()) }}'">
+                                            Update
                                         </button>
-                                    </form>
+
+
+                                        <form action="{{ route('users.destroy', $user->getKey()) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -76,7 +89,7 @@
             </div>
         @endif
     </div>
-    <div>
+    <div class="container">
         {{ $users->links() }}
     </div>
 

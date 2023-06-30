@@ -5,24 +5,24 @@
 @endsection
 
 @section('content')
-    <div>
-        <p>
+    <div class="container mt-3">
+        <b>
             Edit Post
-        </p>
+        </b>
     </div>
 
-    <div>
+    <div class="container">
 
         <form action="{{ route('profile.posts.update', $post->getKey()) }}" method="POST">
             @csrf
             @method('PUT')
 
-        @include('profile._form')
-        <div>
-            <button type="submit">
-                Update
-            </button>
-        </div>
+            @include('profile._form')
+            <div class="mt-3">
+                <button type="submit" class="btn btn-mb btn-outline-secondary">
+                    Update
+                </button>
+            </div>
         </form>
 
 
