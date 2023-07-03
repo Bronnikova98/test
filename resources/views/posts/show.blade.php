@@ -10,9 +10,11 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        <p>
-            {{ $post->getText()}}
-        </p>
+    <div class="container mt-3 ">
+        <h3>{{ $post->getTitle()}}</h3>
+        <img src="{{ $post->getFirstMediaUrl('preview', 'large') }}" style="max-width: 800px;">
+        <p>{{ $post->getText()}}</p>
+
+        <p>By {{ $post->getUser()->getName()}}</p>
     </div>
 @endsection

@@ -6,20 +6,20 @@
 
 @section('content')
 
-    <div>
-        <p>
+    <div class="container my-3">
+        <b>
             Create Post
-        </p>
+        </b>
     </div>
 
-    <div>
+    <div class="container">
         {{--        <form action="{{ route('users.store') }}" method="POST">--}}
         {{--            @csrf--}}
-        {{ Form::open(['method' => 'POST', 'url' => route('profile.posts.store')]) }}
+        {{ Form::open(['method' => 'POST', 'url' => route('profile.posts.store'), 'files' => true]) }}
 
         @include('profile._form')
-        <div>
-            <button type="submit">
+        <div class="mt-3">
+            <button type="submit" class="btn btn-sm btn-outline-secondary">
                 Add
             </button>
         </div>

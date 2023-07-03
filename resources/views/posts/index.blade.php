@@ -12,18 +12,15 @@
 @section('content')
     <div class="py-5 bg-light">
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
                 @foreach($posts as $post)
                     <div class="col">
                         <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c"></rect>
-                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ $post->getUserId()}}</text>
-                            </svg>
+                            <img src="{{ $post->getFirstMediaUrl('preview', 'small') }}" alt=""
+                                 style="max-width: 300px; margin: 0 auto;">
                             <div class="card-body">
+                                <h4 class="mt-3"> {{ $post->getTitle() }}</h4>
+                                <p>{{ $post->user->getName()}}</p>
                                 <p class="card-text">{{ $post->getShortDescription()}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">

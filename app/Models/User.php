@@ -35,8 +35,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
  * @property-read int|null $permissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $post
- * @property-read int|null $post_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
+ * @property-read int|null $posts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
@@ -68,16 +68,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
-
-    public function getPosts(): Post
-    {
-        return $this->post;
-    }
-
-    public function post()
-    {
-        return $this->hasMany(Post::class);
-    }
 
     /**
      * The attributes that are mass assignable.
@@ -113,7 +103,15 @@ class User extends Authenticatable
         'date_of_birth' => 'datetime',
     ];
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 
+    public function getPosts(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->posts;
+    }
 
     /**
      * @return string
@@ -197,8 +195,7 @@ class User extends Authenticatable
 
     public function createOrUpdate(array $requestData): void
     {
-        if (Arr::has($requestData, 'password'))
-        {
+        if (Arr::has($requestData, 'password')) {
             $pass = Hash::make($requestData['password']);
             $this->setPassword($pass);
         }
@@ -242,16 +239,16 @@ class User extends Authenticatable
         $this->public_path = $public_path;
     }
 
-    public function uploadFile(?UploadedFile $uploadedFile) {
+    public function uploadFile(?UploadedFile $uploadedFile)
+    {
 
 
-        if ($uploadedFile instanceof UploadedFile)
-        {
+        if ($uploadedFile instanceof UploadedFile) {
             $storage = Storage::disk('public');
-            $path = '/users/'.$uploadedFile->getClientOriginalName();
+            $path = '/users/' . $uploadedFile->getClientOriginalName();
             $storage->put($path, $uploadedFile->get());
 
-            $local_path = 'public'.$path;
+            $local_path = 'public' . $path;
             $public_path = $storage->url($path);
 
             $this->setPublicPath($public_path);

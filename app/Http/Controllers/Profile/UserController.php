@@ -60,8 +60,9 @@ class UserController extends Controller
     public function update(UpdateProfileUserRequest $request, User $user)
     {
         $data = $request->all();
+        dd($data);
         $user->createOrUpdate($data);
-        $photo = Arr::get($data , 'photo');
+        $photo = Arr::get($data, 'photo');
         $user->uploadFile($photo);
         $user->save();
         return redirect()->back();
