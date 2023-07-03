@@ -46,3 +46,19 @@
                 </span>
     @enderror
 </div>
+
+<div class="form-group mt-3">
+    <label class="form-label">
+        Image
+    </label>
+
+    <input type="file" name="image" class="form-control @error('image') is-invalid @enderror">
+
+    @error('image')
+    <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+    @enderror
+
+
+</div>

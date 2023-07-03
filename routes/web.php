@@ -40,5 +40,3 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin-panel')->group(function
 });
 
 Auth::routes();
-
-
