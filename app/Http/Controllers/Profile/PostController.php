@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -18,14 +17,7 @@ class PostController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $userPosts = $user->posts()->orderBy('created_at', 'desc')->paginate(4);
-
-//        $urlSmallImage = $userPosts->getFirstMediaUrl('preview', 'small');
-//        $urlSmallImage=$userPosts->getFirstMediaUrl('preview', 'small');
-
-
-
-
+        $userPosts = $user->posts()->orderBy('created_at', 'desc')->with('media')->paginate(16);
         return view('profile.index', compact('userPosts'));
     }
 
