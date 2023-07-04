@@ -17,47 +17,34 @@ class UserController extends Controller
         $users = User::orderBy('created_at', 'desc')->paginate(3);
         return view('users.index', compact('users'));
     }
-
     public function create()
     {
         $roles = Role::all()->pluck('name');
         return view('users.create', compact('roles'));
     }
-
     public function store(CreateUserRequest $request)
     {
         $data = $request->all();
         $dataRole = $request->get('role');
-
         $user = new User();
-
         $user->createOrUpdate($data);
-
         $user->assignRole($dataRole);
-
         $user->save();
-
         return redirect()->back();
 
     }
-
     public function show(User $user)
     {
         //
     }
-
     public function edit(User $user)
     {
-
         $roles = Role::all()->pluck('name', 'id');
-
-
         return view('users.edit', [
             'user' => $user,
             'roles' => $roles,
         ]);
     }
-
     public function update(UpdateUserRequest $request, User $user)
     {
         Log::info('Update user '.$user->getKey(), ['name' => $user->getName()]);
@@ -66,7 +53,6 @@ class UserController extends Controller
         $user->save();
         return redirect()->back();
     }
-
     public function destroy(User $user)
     {
         $user->delete();

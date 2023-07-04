@@ -18,9 +18,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('posts', App\Http\Controllers\PostController::class);
+Route::post('posts/{post}/comment/store', [App\Http\Controllers\PostController::class, 'storeComment'])->name('posts.comments.store');
+Route::delete('posts/{post}/comment/{comment}', [App\Http\Controllers\PostController::class, 'destroyComment'])->name('posts.comments.destroy');
+Route::put('posts/{post}/comment/{comment}/update', [App\Http\Controllers\PostController::class, 'updateComment'])->name('posts.comments.update');
+
 Route::middleware(['auth'])->prefix('home')->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-    Route::resource('posts', App\Http\Controllers\PostController::class);
+
     Route::resource('profile/posts', App\Http\Controllers\Profile\PostController::class, ['as' => 'profile']);
     Route::get('profile', [App\Http\Controllers\Profile\UserController::class, 'index'])->name('profile');
     Route::get('profile/{user}/edit', [App\Http\Controllers\Profile\UserController::class, 'edit'])->name('profile.edit');
@@ -37,6 +42,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin-panel')->group(function
         ->middleware(\App\Http\Middleware\UserUpdateMiddleware::class);
 
     Route::resource('admin/posts', App\Http\Controllers\Admin\PostController::class, ['as' => 'admin']);
+
+    Route::resource('admin/comments', App\Http\Controllers\Admin\CommentController::class, ['as' => 'admin']);
 });
 
 Auth::routes();
