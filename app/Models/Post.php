@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Traits\HasCommentRelationshipTrait;
+use App\Http\Traits\HasUserRelationshipTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +15,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
-use Spatie\MediaLibrary\MediaCollections\FileAdder;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -49,19 +49,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  */
 class Post extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes, InteractsWithMedia;
+    use HasFactory, SoftDeletes, InteractsWithMedia, HasUserRelationshipTrait, HasCommentRelationshipTrait;
 
     public const MEDIA_COLLECTION_PREVIEW = 'preview';
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 
     /**
      * @return string
@@ -111,22 +101,6 @@ class Post extends Model implements HasMedia
         $this->text = $text;
     }
 
-    /**
-     * @return int
-     */
-    public function getUserId(): int
-    {
-        return $this->user_id;
-    }
-
-    /**
-     * @param int $user_id
-     */
-    public function setUserId(int $user_id): void
-    {
-        $this->user_id = $user_id;
-    }
-
     public function createOrUpdate(array $requestData): void
     {
         $user_id = Auth::id();
@@ -169,6 +143,7 @@ class Post extends Model implements HasMedia
         $media->setCustomProperty('height', $height);
         $media->save();
     }
+
 
 
 

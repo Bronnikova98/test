@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Traits\HasCommentRelationshipTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
@@ -31,6 +32,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $deleted_at
  * @property string|null $local_path
  * @property string|null $public_path
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read int|null $comments_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
@@ -67,7 +70,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, HasCommentRelationshipTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -103,7 +106,7 @@ class User extends Authenticatable
         'date_of_birth' => 'datetime',
     ];
 
-    public function posts()
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Post::class);
     }
