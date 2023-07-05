@@ -10,6 +10,9 @@
 @endsection
 
 @section('content')
+    <div class="mt-3">
+        <p style="text-align: center; font-size: 20px; font-weight: bold;">Посты</p>
+    </div>
     <div class="py-5 bg-light">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
@@ -26,7 +29,7 @@
                                     <div class="btn-group">
                                         <button class="btn btn-sm btn-outline-secondary" type="button"
                                                 onclick="window.location='{{ URL::route('posts.show', $post->getKey()) }}'">
-                                            View
+                                            {{ __('Подробнее') }}
                                         </button>
                                     </div>
                                 </div>
