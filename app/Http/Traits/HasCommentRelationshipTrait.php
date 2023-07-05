@@ -10,5 +10,4 @@ trait HasCommentRelationshipTrait
     {
         return $this->hasMany(Comment::class);
     }
-
 }

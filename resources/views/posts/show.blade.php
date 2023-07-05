@@ -14,9 +14,9 @@
 @endsection
 
 @section('content')
-    <div class="container d-flex justify-content-end">
-        <a href="{{ route('posts.index') }}">
-            All posts
+    <div class="container d-flex justify-content-end mt-3">
+        <a href="{{ route('posts.index') }}" style="text-decoration: none;">
+            {{ __('Назад к постам') }}
         </a>
     </div>
     <div class="container my-3 ">
@@ -25,20 +25,25 @@
             <img src="{{ $post->getFirstMediaUrl('preview', 'large') }}" style="max-width: 800px;">
         </div>
         <p class="mt-3">{{ $post->getText()}}</p>
-        <b>By {{ $post->getUser()->getName()}}</b>
+        <b>{{ __('Автор: ') }}{{ $post->getUser()->getName()}}</b>
     </div>
     <div class="container py-3" style="border: 1px #666666 solid; border-radius: 10px;">
         <b>
-            Form
+            {{ __('Оставьте свой комментарий') }}
         </b>
         @guest
-            <p>Please, auth</p>
+            <p>
+                {{ __('Пожалуйста, авторизуйтесь для того, чтобы оставить комментарий. Для этого перейдите по ') }}
+                <a href="{{ route('login') }}" style="text-decoration: none;">
+                    {{ __('этой ссылке.') }}
+                </a>
+            </p>
         @else
             <form action="{{ route('posts.comments.store', $post->getKey()) }}" method="POST">
                 @csrf
                 <div class="form-group mt-3">
                     <label for="textarea-post" class="form-label">
-                        Text comment
+                        {{ __('Текст') }}
                     </label>
                     <textarea id="textarea-post" name="text"
                               class="form-control @error('text') is-invalid @enderror"></textarea>
@@ -49,14 +54,14 @@
                     @enderror
                 </div>
                 <button type="submit" class="btn btn-mb btn-outline-secondary mt-3">
-                    Send
+                    {{ __('Отправить') }}
                 </button>
             </form>
         @endguest
     </div>
     <div class="container my-3" style="border: #666666 1px solid; border-radius: 10px;">
         <div class="my-3">
-            <b> Comments </b>
+            <b> {{ __('Комментарии') }} </b>
         </div>
         @foreach($comments as $comment)
             <div class="my-3" style="border-bottom: #a1a1aa 1px solid">
@@ -75,7 +80,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                        Delete
+                                        {{ __('Удалить') }}
                                     </button>
                                 </form>
                             </div>
@@ -86,7 +91,7 @@
                                 <div class="d-flex">
                                     <div class="me-3">
                                         <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                            Update
+                                            {{ __('Обновить') }}
                                         </button>
                                     </div>
                                     <div class="form-group">

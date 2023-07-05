@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @var \App\Models\Post $post
+ */
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateCommentRequest;
@@ -11,40 +13,44 @@ use Illuminate\Support\Arr;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $posts = Post::orderBy('created_at', 'desc')->paginate(4);
         return view('posts.index', compact('posts'));
     }
+
     public function create()
     {
         //
     }
+
     public function store(Request $request)
     {
 
     }
-    public function show(Post $post)
+
+    public function show(Post $post): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         // тут изменить is_publish
         $comments = Comment::where('is_publish', 1)->where('post_id', $post->getKey())->orderBy('created_at', 'desc')->paginate(3);
-        return view('posts.show',
-            [
-                'post' => $post
-            ], compact('post', 'comments'));
+        return view('posts.show', compact('post', 'comments'));
     }
+
     public function edit(Post $post)
     {
         //
     }
+
     public function update(Request $request, Post $post)
     {
         //
     }
+
     public function destroy(Post $post)
     {
         //
     }
+
     public function storeComment(CreateCommentRequest $request, Post $post): \Illuminate\Http\RedirectResponse
     {
         $data = $request->all();
@@ -53,11 +59,13 @@ class PostController extends Controller
         $comment->save();
         return redirect()->back();
     }
+
     public function destroyComment(Post $post, Comment $comment): \Illuminate\Http\RedirectResponse
     {
         $comment->delete();
         return redirect()->back();
     }
+
     public function updateComment(UpdateCommentRequest $request, Post $post, Comment $comment): \Illuminate\Http\RedirectResponse
     {
         $data = $request->all();

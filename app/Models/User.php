@@ -72,11 +72,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, HasCommentRelationshipTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'surname',
@@ -85,115 +80,95 @@ class User extends Authenticatable
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'date_of_birth' => 'datetime',
     ];
 
-    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
-
     public function getPosts(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->posts;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
     public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPassword(): mixed
     {
         return $this->password;
     }
 
-    /**
-     * @param mixed $password
-     */
     public function setPassword(mixed $password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return string
-     */
     public function getSurname(): string
     {
         return $this->surname;
     }
 
-    /**
-     * @param string $surname
-     */
     public function setSurname(string $surname): void
     {
         $this->surname = $surname;
     }
 
-    /**
-     * @return \Illuminate\Support\Carbon|null
-     */
     public function getDateOfBirth(): ?\Illuminate\Support\Carbon
     {
         return $this->date_of_birth;
     }
 
-    /**
-     * @param \Illuminate\Support\Carbon|null $date_of_birth
-     */
     public function setDateOfBirth(?\Illuminate\Support\Carbon $date_of_birth): void
     {
         $this->date_of_birth = $date_of_birth;
+    }
+
+    public function getLocalPath(): ?string
+    {
+        return $this->local_path;
+    }
+
+    public function setLocalPath(?string $local_path): void
+    {
+        $this->local_path = $local_path;
+    }
+
+    public function getPublicPath(): ?string
+    {
+        return $this->public_path;
+    }
+
+    public function setPublicPath(?string $public_path): void
+    {
+        $this->public_path = $public_path;
+    }
+
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Post::class);
     }
 
     public function createOrUpdate(array $requestData): void
@@ -202,68 +177,26 @@ class User extends Authenticatable
             $pass = Hash::make($requestData['password']);
             $this->setPassword($pass);
         }
+//        dd(Carbon::createFromFormat("Y-m-d", $requestData['date_of_birth']));
 
         $this->setName($requestData['name']);
         $this->setEmail($requestData['email']);
-
         $this->setSurname($requestData['surname']);
-        $this->setDateOfBirth(Carbon::make($requestData['date_of_birth']));
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLocalPath(): ?string
-    {
-        return $this->local_path;
-    }
-
-    /**
-     * @param string|null $local_path
-     */
-    public function setLocalPath(?string $local_path): void
-    {
-        $this->local_path = $local_path;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPublicPath(): ?string
-    {
-        return $this->public_path;
-    }
-
-    /**
-     * @param string|null $public_path
-     */
-    public function setPublicPath(?string $public_path): void
-    {
-        $this->public_path = $public_path;
+//        $this->setDateOfBirth(Carbon::make($requestData['date_of_birth']));
+//        $this->setDateOfBirth();
     }
 
     public function uploadFile(?UploadedFile $uploadedFile)
     {
-
-
         if ($uploadedFile instanceof UploadedFile) {
             $storage = Storage::disk('public');
             $path = '/users/' . $uploadedFile->getClientOriginalName();
             $storage->put($path, $uploadedFile->get());
-
             $local_path = 'public' . $path;
             $public_path = $storage->url($path);
-
             $this->setPublicPath($public_path);
             $this->setLocalPath($local_path);
-
-
         };
-
         return $path ?? null;
-
-
     }
-
-
 }

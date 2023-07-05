@@ -23,7 +23,6 @@ class HomeController extends Controller
      */
     public function index(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
-//        return redirect('/profile');
-        return redirect()->route('profile');
+        return view('home');
     }
 }

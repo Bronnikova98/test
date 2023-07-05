@@ -10,44 +10,58 @@
 @endsection
 
 @section('content')
+    <div class="container mt-3">
+        <h5>
+            {{ __('Панель администратора') }}
+        </h5>
+    </div>
+    <div class="container">
+        <p style="font-weight: bold; font-size: 20px; text-align: center;">
+            {{ __('Посты') }}
+        </p>
+
+    </div>
     <div class="py-5 bg-light">
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
-                @foreach($posts as $post)
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>{{ $post->getTitle() }}</title>
-                                <rect width="100%" height="100%" fill="#55595c"></rect>
-                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ $post->getUserId()}}</text>
-                            </svg>
-                            <div class="card-body">
-                                <p class="card-text">{{ $post->getShortDescription()}}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex">
-                                        <button class="btn btn-sm btn-outline-secondary " type="button"
-                                                onclick="window.location='{{ URL::route('admin.posts.show', $post->getKey()) }}'">
-                                            View
-                                        </button>
-                                        <div class="ms-3">
-                                            <form action="{{ route('admin.posts.destroy', $post->getKey()) }}"
-                                                  method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                @if(empty($posts))
+                    <b>
+                        {{ __('Посты не найдены') }}
+                    </b>
+                @else
+                    @foreach($posts as $post)
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src="{{ $post->getFirstMediaUrl('preview', 'small') }}" alt=""
+                                     style="max-width: 300px; margin: 0 auto;">
+                                <div class="card-body">
+                                    <h4 class="mt-3"> {{ $post->getTitle() }}</h4>
+                                    <p>{{ $post->user->getName()}}</p>
+                                    <p class="card-text">{{ $post->getShortDescription()}}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex">
+                                            <button class="btn btn-sm btn-outline-secondary " type="button"
+                                                    onclick="window.location='{{ URL::route('admin.posts.show', $post->getKey()) }}'">
+                                                {{ __('Подробнее') }}
+                                            </button>
+                                            <div class="ms-3">
+                                                <form action="{{ route('admin.posts.destroy', $post->getKey()) }}"
+                                                      method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                                        {{ __('Удалить пост') }}
+                                                    </button>
+                                                </form>
+                                            </div>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

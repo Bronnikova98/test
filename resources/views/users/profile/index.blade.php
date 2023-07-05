@@ -10,12 +10,19 @@
 @endsection
 
 @section('content')
-    <div class="container mt-3">
-        <p>
-            <b>
-                User Profile
-            </b>
-        </p>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col">
+                <b>
+                    {{ __('Мой профиль') }}
+                </b>
+            </div>
+            <div class="col">
+                <a href="{{ route('profile.posts.index') }}" style="text-decoration: none;">
+                    {{ __('Мои посты') }}
+                </a>
+            </div>
+        </div>
     </div>
     <div class="container">
         <div class="card" style="width: 18rem;">
@@ -26,7 +33,7 @@
                 <p class="card-text">{{ $user->getEmail() }}</p>
                 <button class="btn btn-sm btn-outline-secondary me-3" type="button"
                         onclick="window.location='{{ URL::route('profile.edit', $user->getkey()) }}'">
-                    Update User
+                    {{ __('Редактировать профиль') }}
                 </button>
             </div>
         </div>

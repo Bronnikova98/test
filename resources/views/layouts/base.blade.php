@@ -11,42 +11,51 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
-
+                <b class="me-5" style="font-size: 18px;">{{ __('Учебный проект') }}</b>
+                📝
+                <a href="{{ route('posts.index') }}" style="text-decoration: none;" class="me-3">
+                    {{ __('Посты') }}
+                </a>
+                @if (Route::has('login'))
+                    @auth
+                        🙂
+                        <a href="{{ route('profile') }}" class="me-3"
+                           style="text-decoration: none;">{{ __('Профиль') }}</a>
+                    @endauth
+                @endif
+                @auth
+                    @if(auth()->user()->hasRole('admin'))
+                        📃
+                        <a href="{{ route('admin.posts.index') }}" style="text-decoration: none; color: #491217;"
+                           class="me-3">
+                            {{ __('Посты') }}
+                        </a>
+                        🖍
+                        <a href="{{ route('admin.comments.index') }}" style="text-decoration: none; color: #491217;"
+                           class="me-3">
+                            {{ __('Комментарии') }}
+                        </a>
+                        🐱
+                        <a href="{{ route('users.index') }}" style="text-decoration: none; color: #491217;">
+                            {{ __('Пользователи') }}
+                        </a>
+                    @endif
+                @endauth
             </ul>
-
-            <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
-                <!-- Authentication Links -->
-{{--                @if (Route::has('login'))--}}
-{{--                    <div class="container d-flex justify-content-end py-3">--}}
-{{--                        @auth--}}
-{{--                            <a href="{{ route('home') }}" class="me-3" style="text-decoration: none;">{{ __('Домой') }}</a>--}}
-{{--                        @else--}}
-{{--                            <a href="{{ route('login') }}" class="me-3" style="text-decoration: none;">{{ __('Вход') }}</a>--}}
-
-{{--                            @if (Route::has('register'))--}}
-{{--                                <a href="{{ route('register') }}" class="" style="text-decoration: none;">{{ __('Регистрация') }}</a>--}}
-{{--                            @endif--}}
-{{--                        @endauth--}}
-{{--                    </div>--}}
-{{--                @endif--}}
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Вход') }}</a>
                         </li>
                     @endif
-
                     @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
@@ -54,17 +63,16 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }}
                         </a>
-
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                                {{ __('Выйти из профиля') }}
                             </a>
-
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
@@ -75,8 +83,6 @@
         </div>
     </div>
 </nav>
-
 @yield('content')
-
 </body>
 </html>

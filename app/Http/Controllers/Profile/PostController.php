@@ -1,33 +1,30 @@
 <?php
-
+/**
+ * @var \App\Models\Post $post
+ */
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class PostController extends Controller
 {
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $user = Auth::user();
-        $userPosts = $user->posts()->orderBy('created_at', 'desc')->with('media')->paginate(16);
+        $userPosts = $user->posts()->orderBy('created_at', 'desc')->with('media')->paginate(4);
         return view('profile.index', compact('userPosts'));
     }
+
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('profile.create');
     }
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
+
     public function store(CreatePostRequest $request): \Illuminate\Http\RedirectResponse
     {
         $data = $request->all();
@@ -38,24 +35,26 @@ class PostController extends Controller
         $post->uploadFile($image);
         return redirect()->back();
     }
+
     public function show(Post $post)
     {
         //
     }
-    public function edit(Post $post)
+
+    public function edit(Post $post): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('profile.edit', [
-            'post' => $post,
-        ]);
+        return view('profile.edit', compact('post'));
     }
-    public function update(UpdatePostRequest $request, Post $post)
+
+    public function update(UpdatePostRequest $request, Post $post): \Illuminate\Http\RedirectResponse
     {
         $data = $request->all();
         $post->createOrUpdate($data);
         $post->save();
         return redirect()->back();
     }
-    public function destroy(Post $post)
+
+    public function destroy(Post $post): \Illuminate\Http\RedirectResponse
     {
         $post->delete();
         return redirect()->back();
