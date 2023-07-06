@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @var \App\Models\Post $post
+ */
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -8,8 +10,7 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $posts = Post::orderBy('created_at', 'desc')->paginate(4);
         return view('admin.index', compact('posts'));
@@ -20,18 +21,14 @@ class PostController extends Controller
         //
     }
 
-
     public function store(Request $request)
     {
         //
     }
 
-    public function show(Post $post)
+    public function show(Post $post): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('admin.show',
-            [
-                'post' => $post
-            ], compact('post'));
+        return view('admin.show', compact('post'));
     }
 
     public function edit(Post $post)
@@ -44,7 +41,7 @@ class PostController extends Controller
         //
     }
 
-    public function destroy(Post $post)
+    public function destroy(Post $post): \Illuminate\Http\RedirectResponse
     {
         $post->delete();
         return redirect()->back();

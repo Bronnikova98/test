@@ -53,49 +53,31 @@ class Post extends Model implements HasMedia
 
     public const MEDIA_COLLECTION_PREVIEW = 'preview';
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
     public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
     public function getShortDescription(): string
     {
         return $this->short_description;
     }
 
-    /**
-     * @param string $short_description
-     */
     public function setShortDescription(string $short_description): void
     {
         $this->short_description = $short_description;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
     public function setText(string $text): void
     {
         $this->text = $text;
@@ -110,45 +92,27 @@ class Post extends Model implements HasMedia
         $this->setUserId($user_id);
     }
 
-    /**
-     * @throws InvalidManipulation
-     */
     public function registerMediaConversions(Media $media = null): void
     {
         $this
             ->addMediaConversion('large')
             ->format(Manipulations::FORMAT_WEBP)
             ->width(1200);
-
         $this
             ->addMediaConversion('small')
             ->format(Manipulations::FORMAT_WEBP)
             ->width(300);
     }
 
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
     public function uploadFile(?UploadedFile $uploadedFile): void
     {
         $media = $this->addMedia($uploadedFile)
             ->toMediaCollection(self::MEDIA_COLLECTION_PREVIEW);
-
         $data = getimagesize($media->getPath());
         $width = $data[0];
         $height = $data[1];
-
         $media->setCustomProperty('width', $width);
         $media->setCustomProperty('height', $height);
         $media->save();
     }
-
-
-
-
 }
-
-
-
-

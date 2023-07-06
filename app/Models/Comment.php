@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Http\Traits\HasUserRelationshipTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -37,73 +36,49 @@ class Comment extends Model
 {
     use HasFactory, HasUserRelationshipTrait;
 
-    public function post()
-    {
-        return $this->belongsTo(Post::class);
-    }
-
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return int
-     */
     public function getPostId(): int
     {
         return $this->post_id;
     }
 
-    /**
-     * @param int $post_id
-     */
     public function setPostId(int $post_id): void
     {
         $this->post_id = $post_id;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
     public function setText(string $text): void
     {
         $this->text = $text;
     }
 
-    /**
-     * @return int
-     */
     public function getIsPublish(): int
     {
         return $this->is_publish;
     }
 
-    /**
-     * @param int $is_publish
-     */
     public function setIsPublish(int $is_publish): void
     {
         $this->is_publish = $is_publish;
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
     }
 
     public function createOrUpdate(array $requestData, $requestPost): void
@@ -113,5 +88,4 @@ class Comment extends Model
         $this->setText($requestData['text']);
         $this->setIsPublish($requestData['is_publish'] ?? 1);
     }
-
 }

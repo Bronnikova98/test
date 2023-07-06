@@ -14,20 +14,20 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::resource('posts', App\Http\Controllers\PostController::class);
-Route::post('posts/{post}/comment/store', [App\Http\Controllers\PostController::class, 'storeComment'])->name('posts.comments.store');
-Route::delete('posts/{post}/comment/{comment}', [App\Http\Controllers\PostController::class, 'destroyComment'])->name('posts.comments.destroy');
-Route::put('posts/{post}/comment/{comment}/update', [App\Http\Controllers\PostController::class, 'updateComment'])->name('posts.comments.update');
+Auth::routes();
 
-Route::middleware(['auth'])->prefix('home')->group(function () {
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+Route::get('/', [App\Http\Controllers\PostController::class, 'index'])->name('posts.index');
+Route::get('/post/{post}', [App\Http\Controllers\PostController::class, 'show'])->name('posts.show');
+Route::post('/post/{post}/comment/store', [App\Http\Controllers\PostController::class, 'storeComment'])->name('posts.comments.store');
+Route::delete('/post/{post}/comment/{comment}', [App\Http\Controllers\PostController::class, 'destroyComment'])->name('posts.comments.destroy');
+Route::put('/post/{post}/comment/{comment}/update', [App\Http\Controllers\PostController::class, 'updateComment'])->name('posts.comments.update');
 
-    Route::resource('profile/posts', App\Http\Controllers\Profile\PostController::class, ['as' => 'profile']);
+Route::middleware(['auth'])->group(function () {
+
     Route::get('profile', [App\Http\Controllers\Profile\UserController::class, 'index'])->name('profile');
+    Route::resource('/profile/posts', App\Http\Controllers\Profile\PostController::class, ['as' => 'profile']);
+
     Route::get('profile/{user}/edit', [App\Http\Controllers\Profile\UserController::class, 'edit'])->name('profile.edit');
     Route::put('profile/{user}', [App\Http\Controllers\Profile\UserController::class, 'update'])->name('profile.update');
 });
@@ -46,4 +46,3 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin-panel')->group(function
     Route::resource('admin/comments', App\Http\Controllers\Admin\CommentController::class, ['as' => 'admin']);
 });
 
-Auth::routes();

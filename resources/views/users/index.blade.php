@@ -10,17 +10,24 @@
 @endsection
 
 @section('content')
+    <div class="container mt-3">
+        <h5>
+            {{ __('Панель администратора') }}
+        </h5>
+        <p style="text-align: center; font-size: 20px; font-weight: bold;">
+            {{ __('Пользователи') }}
+        </p>
+    </div>
     <div class="container my-3 d-flex justify-content-end">
-        <button class="btn btn-sm btn-outline-secondary" type="button"
+        <button class="btn btn-md btn-outline-secondary" type="button"
                 onclick="window.location='{{ URL::route('users.create') }}'">
-            Add User
+            {{ __('Создать пользователя') }}
         </button>
     </div>
-
     <div class="container">
         @if(empty($users))
             <p>
-                Empty
+                {{ __('Пользователи не найдены') }}
             </p>
         @else
             <div>
@@ -28,21 +35,19 @@
                     <thead>
                     <tr>
                         <th>
-                            ID
+                            {{ __('ID') }}
                         </th>
                         <th>
-                            Name
+                            {{ __('Имя') }}
                         </th>
                         <th>
-                            Surname
+                            {{ __('Фамилия') }}
                         </th>
                         <th>
-                            Date of birth
+                            {{ __('Дата рождения') }}
                         </th>
                         <th>
-                            Actions
                         </th>
-
                     </tr>
                     </thead>
                     <tbody>
@@ -63,26 +68,21 @@
                             <td>
                                 <div class="row">
                                     <div class="col d-flex">
-
-
                                         <button class="btn btn-sm btn-outline-secondary me-3" type="button"
                                                 onclick="window.location='{{ URL::route('users.edit', $user->getKey()) }}'">
-                                            Update
+                                            {{ __('Редактировать') }}
                                         </button>
-
-
                                         <form action="{{ route('users.destroy', $user->getKey()) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                Delete
+                                                {{ __('Удалить') }}
                                             </button>
                                         </form>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-
                     @endforeach
                     </tbody>
                 </table>
@@ -92,5 +92,4 @@
     <div class="container">
         {{ $users->links() }}
     </div>
-
 @endsection
