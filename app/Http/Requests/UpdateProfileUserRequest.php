@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,9 +26,17 @@ class UpdateProfileUserRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
-            'date_of_birth' => 'nullable|max:255',
+            'date_of_birth' => 'nullable|date|before:'. Carbon::now()->subYears(12),
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user)],
             'photo' => 'nullable|image|mimes:jpeg,png,webp|max:5000',
         ];
+    }
+
+    public function messages()
+    {
+        return
+            [
+                'name.required' => 'Обязательное поле Имя',
+            ];
     }
 }
