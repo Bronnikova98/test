@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
          */
 
 
-        $user = User::firstOrCreate([
+        $user = User::firstOrNew([
             'name' => 'Test',
             'surname' => 'Admin',
             'email' => 'testadmin@example.com',

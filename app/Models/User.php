@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Traits\HasCommentRelationshipTrait;
+use Carbon\Doctrine\DateTimeDefaultPrecision;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
@@ -177,13 +178,20 @@ class User extends Authenticatable
             $pass = Hash::make($requestData['password']);
             $this->setPassword($pass);
         }
-//        dd(Carbon::createFromFormat("Y-m-d", $requestData['date_of_birth']));
+
+        $date = $requestData['date_of_birth'];
+        if ($date != null) {
+            $date = Carbon::parse($date . ' 00:00:00');
+            $this->setDateOfBirth($date);
+        }
+
+        if ($date === null) {
+            $this->setDateOfBirth($date);
+        }
 
         $this->setName($requestData['name']);
         $this->setEmail($requestData['email']);
         $this->setSurname($requestData['surname']);
-//        $this->setDateOfBirth(Carbon::make($requestData['date_of_birth']));
-//        $this->setDateOfBirth();
     }
 
     public function uploadFile(?UploadedFile $uploadedFile)

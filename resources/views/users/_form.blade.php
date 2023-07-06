@@ -13,6 +13,12 @@
             </option>
         @endforeach
     </select>
+
+    @error('role')
+    <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+    @enderror
 </div>
 <div class="form-group mt-3">
     <label class="form-label">
@@ -43,8 +49,8 @@
     <label class="form-label">
         {{ __('Дата рождения') }}
     </label>
-    <input type="text" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth"
-           value="{{ isset($user) ? $user->getDateOfBirth()?->format('d-m-Y') : null}}">
+    <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth"
+           value="{{ isset($user) ? $user->getDateOfBirth()->format('Y-m-d') : null}}">
 
     @error('date_of_birth')
     <span class="invalid-feedback" role="alert">
