@@ -139,7 +139,7 @@ class Post extends Model implements HasMedia
         return $query;
     }
 
-    public function scopeFilterSearch(Builder $query, string $text): Builder
+    public function scopeFilterSearch(Builder $query, ?string $text): Builder
     {
         return $query->where('title', 'LIKE', '%' . $text . '%')
             ->orWhere('short_description', 'LIKE', '%' . $text . '%')
@@ -163,4 +163,5 @@ class Post extends Model implements HasMedia
         }
         return $query;
     }
+
 }

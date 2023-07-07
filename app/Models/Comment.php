@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Traits\HasUserRelationshipTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -87,5 +88,16 @@ class Comment extends Model
         $this->setPostId($requestPost->getKey());
         $this->setText($requestData['text']);
         $this->setIsPublish($requestData['is_publish'] ?? 1);
+    }
+
+    public function scopeFilterPublishComment(Builder $query, $post): Builder
+    {
+        $userId = $post->getUser()->getKey();
+
+        if($userId != Auth::id())
+        {
+            $query->where('is_publish', 1);
+        }
+        return $query;
     }
 }

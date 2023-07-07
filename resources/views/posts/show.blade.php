@@ -91,14 +91,16 @@
                                 <div class="d-flex">
                                     <div class="me-3">
                                         <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                            {{ __('Обновить') }}
+                                            {{ isset($comment) && $comment->getIsPublish() === 1 ?  __('Скрыть') : __('Опубликовать')}}
                                         </button>
                                     </div>
                                     <div class="form-group">
-                                        <input type="number"
-                                               class="form-control @error('is_publish') is-invalid @enderror"
-                                               name="is_publish"
-                                               value="{{ $comment->getIsPublish()}}" readonly>
+                                        <label>
+                                            <input type="checkbox" name="is_publish" value="{{ $comment->getIsPublish()}}" {{ isset($comment) && $comment->getIsPublish() === 1 ? 'checked' : null}}>
+                                            <span>
+                                                {{ isset($comment) && $comment->getIsPublish() === 1 ?  __('Опубликовано') : __('Не опубликовано')}}
+                                            </span>
+                                        </label>
                                         @error('is_publish')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -122,3 +124,4 @@
         {{ $comments->links() }}
     </div>
 @endsection
+

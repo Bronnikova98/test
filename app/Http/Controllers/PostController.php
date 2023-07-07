@@ -12,6 +12,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -35,8 +36,7 @@ class PostController extends Controller
 
     public function show(Post $post): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        // тут изменить is_publish
-        $comments = Comment::where('is_publish', 1)->where('post_id', $post->getKey())->orderBy('created_at', 'desc')->paginate(3);
+        $comments = Comment::filterPublishComment($post)->where('post_id', $post->getKey())->orderBy('created_at', 'desc')->paginate(3);
         return view('posts.show', compact('post', 'comments'));
     }
 
