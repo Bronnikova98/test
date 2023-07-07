@@ -119,16 +119,48 @@ class Post extends Model implements HasMedia
         $media->save();
     }
 
-    public function scopeFilterSearch(Builder $query, $text, $parameter): Builder
+    public function scopeFilter(Builder $query, array $frd): Builder
     {
-        //all
-            return $query->where('title', 'LIKE', '%' . $text . '%')
-                ->orWhere('short_description', 'LIKE', '%' . $text . '%')
-                ->orWhere('text', 'LIKE', '%' . $text . '%');
+        foreach ($frd as $key => $value) {
+            switch ($key) {
+                case 'search':
+                    {
+                        $query->filterSearch($value);
+                    }
+                    break;
 
-        // with comments
+                case 'parameter':
+                    {
+                        $query->filterHasComments($value);
+                    }
+                    break;
+            }
+        }
+        return $query;
+    }
 
+    public function scopeFilterSearch(Builder $query, string $text): Builder
+    {
+        return $query->where('title', 'LIKE', '%' . $text . '%')
+            ->orWhere('short_description', 'LIKE', '%' . $text . '%')
+            ->orWhere('text', 'LIKE', '%' . $text . '%');
+    }
 
+    public function scopeFilterHasComments(Builder $query, int $param): Builder
+    {
+        switch ($param) {
+            case PostCommentParamEnum::WITH_COMMENTS:
+                {
+                    $query->whereHas('comments');
+                }
+                break;
 
+            case PostCommentParamEnum::WITHOUT_COMMENTS:
+                {
+                    $query->whereDoesntHave('comments');
+                }
+                break;
+        }
+        return $query;
     }
 }

@@ -27,8 +27,8 @@
                 <label class="form-label">
                     {{ __('Поиск по названию, краткому описанию, тексту поста') }}
                 </label>
-                <input type="text" class="form-control @error('date_of_birth') is-invalid @enderror" name="search">
-
+                <input type="text" class="form-control @error('date_of_birth') is-invalid @enderror" name="search"
+                       value="{{ request()->search }}">
                 @error('search')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -38,7 +38,7 @@
             <div class="form-group mt-3">
                 <select class="form-select" name="parameter">
                     @foreach($params as $key => $param)
-                        <option value="{{ $key }}"> {{ $param }}
+                        <option value="{{ $key }}" {{ $key == request()->parameter ? 'selected' : null }}> {{ $param }}
                         </option>
                     @endforeach
                 </select>

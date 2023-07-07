@@ -18,9 +18,8 @@ class PostController extends Controller
     public function index(SearchRequest $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $params = PostCommentParamEnum::PARAMS;
-        $search = $request['search'];
-        $param = $request['parameter'];
-        $posts = Post::filterSearch($search, $param)->orderBy('created_at', 'desc')->paginate(4);
+        $frd = $request->all();
+        $posts = Post::filter($frd)->orderBy('created_at', 'desc')->paginate(4);
         return view('posts.index', compact('posts', 'params'));
     }
 
