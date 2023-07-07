@@ -21,6 +21,40 @@
     <div class="mt-3">
         <p style="text-align: center; font-size: 20px; font-weight: bold;">{{ __('Посты') }}</p>
     </div>
+    <div class="container mb-3">
+        <form action="{{ route('posts.index') }}">
+            <div class="form-group mt-3">
+                <label class="form-label">
+                    {{ __('Поиск по названию, краткому описанию, тексту поста') }}
+                </label>
+                <input type="text" class="form-control @error('date_of_birth') is-invalid @enderror" name="search">
+
+                @error('search')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-select" name="parameter">
+                    @foreach($params as $key => $param)
+                        <option value="{{ $key }}"> {{ $param }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('parameter')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-md btn-outline-secondary">
+                    {{ __('Искать') }}
+                </button>
+            </div>
+        </form>
+    </div>
     <div class="py-5 bg-light">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
@@ -56,6 +90,6 @@
     </div>
 
     <div class="container mt-3">
-        {{ $posts->links() }}
+        {{ $posts->withQueryString()->links() }}
     </div>
 @endsection

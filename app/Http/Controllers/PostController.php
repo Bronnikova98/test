@@ -4,7 +4,9 @@
  */
 namespace App\Http\Controllers;
 
+use App\Enums\PostCommentParamEnum;
 use App\Http\Requests\CreateCommentRequest;
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
@@ -13,10 +15,13 @@ use Illuminate\Support\Arr;
 
 class PostController extends Controller
 {
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(SearchRequest $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(4);
-        return view('posts.index', compact('posts'));
+        $params = PostCommentParamEnum::PARAMS;
+        $search = $request['search'];
+        $param = $request['parameter'];
+        $posts = Post::filterSearch($search, $param)->orderBy('created_at', 'desc')->paginate(4);
+        return view('posts.index', compact('posts', 'params'));
     }
 
     public function create()

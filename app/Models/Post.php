@@ -9,13 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Enums\PostCommentParamEnum;
 
 /**
  * App\Models\Post
@@ -52,6 +51,10 @@ class Post extends Model implements HasMedia
     use HasFactory, SoftDeletes, InteractsWithMedia, HasUserRelationshipTrait, HasCommentRelationshipTrait;
 
     public const MEDIA_COLLECTION_PREVIEW = 'preview';
+
+    protected $casts = [
+        'param' => PostCommentParamEnum::class,
+    ];
 
     public function getTitle(): string
     {
@@ -114,5 +117,18 @@ class Post extends Model implements HasMedia
         $media->setCustomProperty('width', $width);
         $media->setCustomProperty('height', $height);
         $media->save();
+    }
+
+    public function scopeFilterSearch(Builder $query, $text, $parameter): Builder
+    {
+        //all
+            return $query->where('title', 'LIKE', '%' . $text . '%')
+                ->orWhere('short_description', 'LIKE', '%' . $text . '%')
+                ->orWhere('text', 'LIKE', '%' . $text . '%');
+
+        // with comments
+
+
+
     }
 }
